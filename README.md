@@ -52,3 +52,9 @@ python tools/sucai_logo.py    只重新生成 logo
 - 编辑器（`js/editor.js`）是 IIFE 隔离的页内模式；测试钩子 `window.__game` / `window.__editor`，
   断言在 `tools/tests/*.js`，跑法见 `tools/run_test.py`。
 - 「用这张图开一局」= 编辑器存图 → `__game.addMap()` → 页内切回游戏模式（不再导出单文件网页）。
+
+## 在线托管（GitHub Pages）
+
+仓库公开托管于 `Chitandaaaaa/QQTang`，推 main 即发布。根目录 `index.html`
+只是个跳板，立即重定向到 `v2/index.html`（主页即游戏）；
+素材库在 `v2/gallery.html`。`sucai/` 参考图不入库。
