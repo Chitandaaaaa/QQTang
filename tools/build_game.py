@@ -2,7 +2,8 @@
 """把游戏代码与 SVG 素材打包成单文件 HTML。
 
     python build_game.py
-    -> QQTang-battle-v1.html
+    -> QQTang-battle-v1.html      单文件分享版（双击即玩）
+    -> dev/battle/                多文件开发版（index.html + 独立 js/css，调试用）
 """
 import base64
 import glob
@@ -15,6 +16,7 @@ DESIGN = os.path.dirname(HERE)
 SVG_DIR = os.path.join(DESIGN, "assets", "sucai")
 MAPS_DIR = os.path.join(HERE, "game", "maps")
 OUT = os.path.join(DESIGN, "QQTang-battle-v1.html")
+DEV_DIR = os.path.join(DESIGN, "dev", "battle")
 
 # 游戏实际用到的素材
 SPRITES = [
@@ -157,9 +159,41 @@ __JS__
 '''
 
 
+def build_dev(sprites, maps_js):
+    """多文件开发版：同一套源码，经典 <script src> 引用（不用 fetch/ES module），file:// 双击可用"""
+    shell = TEMPLATE
+    shell = shell.replace("<style>\n__CSS__\n</style>",
+                          '<link rel="stylesheet" href="style.css">')
+    shell = shell.replace(
+        '<script>window.QQ_BUILTIN_MAPS=__MAPS__;</script>\n<script>\n__JS__\n</script>',
+        '<script src="js/sprites.js"></script>\n'
+        '<script src="js/maps.js"></script>\n'
+        '<script src="js/game.js"></script>')
+    assert "__CSS__" not in shell and "__JS__" not in shell and "__MAPS__" not in shell
+
+    shell = shell.replace("__LOGO__", logo_inline())
+    shell = shell.replace("__BOMB__", data_uri("bomb"))
+    shell = shell.replace("__P1__", panel(1, "塞尔达", "PLAYER 1", P1_KEYS))
+    shell = shell.replace("__P2__", panel(2, "林克", "PLAYER 2", P2_KEYS))
+
+    js = JS.replace("__SPRITE_DATA__", "window.QQ_SPRITES")
+    assert "__SPRITE_DATA__" not in js
+
+    os.makedirs(os.path.join(DEV_DIR, "js"), exist_ok=True)
+    io.open(os.path.join(DEV_DIR, "index.html"), "w", encoding="utf-8").write(shell)
+    io.open(os.path.join(DEV_DIR, "style.css"), "w", encoding="utf-8").write(CSS)
+    io.open(os.path.join(DEV_DIR, "js", "game.js"), "w", encoding="utf-8").write(js)
+    io.open(os.path.join(DEV_DIR, "js", "sprites.js"), "w", encoding="utf-8").write(
+        "window.QQ_SPRITES = " + sprites + ";\n")
+    io.open(os.path.join(DEV_DIR, "js", "maps.js"), "w", encoding="utf-8").write(
+        "window.QQ_BUILTIN_MAPS = " + maps_js + ";\n")
+    print("  -> %s  (多文件开发版)" % os.path.relpath(DEV_DIR, DESIGN))
+
+
 def main():
     print("打包 夺宝对决 ...")
     sprites = build_sprites()
+    maps_js = builtin_maps_js()
 
     # JS 里的占位替换（用切片拼接，避免 .format 解析 JS 里的花括号）
     js = JS.replace("__SPRITE_DATA__", sprites)
@@ -167,7 +201,7 @@ def main():
 
     html = TEMPLATE
     html = html.replace("__CSS__", CSS)
-    html = html.replace("__MAPS__", builtin_maps_js())
+    html = html.replace("__MAPS__", maps_js)
     html = html.replace("__JS__", js)
     html = html.replace("__LOGO__", logo_inline())
     html = html.replace("__BOMB__", data_uri("bomb"))
@@ -177,6 +211,8 @@ def main():
     io.open(OUT, "w", encoding="utf-8").write(html)
     size = os.path.getsize(OUT) / 1024
     print("  -> %s  (%.0f KB)" % (os.path.relpath(OUT, DESIGN), size))
+
+    build_dev(sprites, maps_js)
 
 
 if __name__ == "__main__":
