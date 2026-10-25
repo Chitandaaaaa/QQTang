@@ -1029,7 +1029,8 @@
       if (a.issues.some(i => i[0] === 'bad')) { toast('先修好标红的地方再开一局', true); return; }
       const id = save(false);
       if (!id) return;
-      window.open('QQTang-battle-v1.html?map=' + encodeURIComponent(id), '_blank');
+      // 单文件版开旁边的 QQTang-battle-v1.html；dev 版由构建注入 QQ_GAME_URL 指向 dev/battle/
+      window.open((window.QQ_GAME_URL || 'QQTang-battle-v1.html') + '?map=' + encodeURIComponent(id), '_blank');
       toast('已保存，正在打开游戏…（游戏里选地图就能看到它）');
     };
 

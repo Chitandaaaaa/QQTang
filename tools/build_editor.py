@@ -2,10 +2,13 @@
 """把地图编辑器与 SVG 素材打包成单文件 HTML。
 
     python build_editor.py
-    -> QQTang-mapeditor-v1.html
+    -> QQTang-mapeditor-v1.html   单文件分享版
+    -> dev/editor/                多文件开发版（index.html + 独立 js/css）
 
 游戏本体（main.js / style.css / 素材 data URI）会一起塞进来，
 这样编辑器能直接「导出一份烧好当前地图的可玩网页」，不需要联网。
+dev 版同样保留这份内嵌副本（导出功能要离线可用）；
+「用这张图开一局」则通过注入的 QQ_GAME_URL 指向 dev/battle/。
 """
 import io
 import json
@@ -19,6 +22,7 @@ import obstacle_tags  # noqa: E402  障碍标签（与素材页共用同一份�
 
 DESIGN = os.path.dirname(HERE)
 OUT = os.path.join(DESIGN, "QQTang-mapeditor-v1.html")
+DEV_DIR = os.path.join(DESIGN, "dev", "editor")
 
 CSS = io.open(os.path.join(HERE, "editor", "style.css"), encoding="utf-8").read()
 JS = io.open(os.path.join(HERE, "editor", "main.js"), encoding="utf-8").read()
@@ -186,8 +190,8 @@ def tag_legend():
     return '\n        '.join(rows)
 
 
-def main():
-    print("打包 地图编辑器 ...")
+def build_js():
+    """编辑器 JS + 全部内嵌数据（游戏副本/素材/障碍标签），单文件版与 dev 版共用"""
     sprites = build_sprites()
 
     assert JS.count("__SPRITE_DATA__") == 1, JS.count("__SPRITE_DATA__")
@@ -201,6 +205,33 @@ def main():
         assert k not in js, k
     # __SPRITE_DATA__ 要留一份在游戏脚本里，导出可玩网页时由编辑器现场填素材
     assert js.count("__SPRITE_DATA__") == 1, js.count("__SPRITE_DATA__")
+    return js
+
+
+def build_dev(js):
+    """多文件开发版：dev/editor/，壳与样式/脚本分文件，QQ_GAME_URL 指向 dev/battle/"""
+    shell = TEMPLATE
+    shell = shell.replace("<style>\n__CSS__\n</style>",
+                          '<link rel="stylesheet" href="style.css">')
+    shell = shell.replace(
+        '<script>\n__JS__\n</script>',
+        "<script>window.QQ_GAME_URL = '../battle/index.html';</script>\n"
+        '<script src="js/editor.js"></script>')
+    assert "__CSS__" not in shell and "__JS__" not in shell
+
+    shell = shell.replace("__LOGO__", build_game.logo_inline())
+    shell = shell.replace("__TAG_LEGEND__", tag_legend())
+
+    os.makedirs(os.path.join(DEV_DIR, "js"), exist_ok=True)
+    io.open(os.path.join(DEV_DIR, "index.html"), "w", encoding="utf-8").write(shell)
+    io.open(os.path.join(DEV_DIR, "style.css"), "w", encoding="utf-8").write(CSS)
+    io.open(os.path.join(DEV_DIR, "js", "editor.js"), "w", encoding="utf-8").write(js)
+    print("  -> %s  (多文件开发版)" % os.path.relpath(DEV_DIR, DESIGN))
+
+
+def main():
+    print("打包 地图编辑器 ...")
+    js = build_js()
 
     html = TEMPLATE.replace("__CSS__", CSS).replace("__JS__", js)
     html = html.replace("__LOGO__", build_game.logo_inline())
@@ -208,6 +239,8 @@ def main():
 
     io.open(OUT, "w", encoding="utf-8").write(html)
     print("  -> %s  (%.0f KB)" % (os.path.relpath(OUT, DESIGN), os.path.getsize(OUT) / 1024))
+
+    build_dev(js)
 
 
 if __name__ == "__main__":
