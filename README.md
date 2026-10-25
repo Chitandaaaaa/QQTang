@@ -1,8 +1,8 @@
 # QQ糖 · 夺宝对决 v2
 
-主页即游戏。地图编辑器是主页内的一个模式（顶栏「地图编辑」切换），
-素材库与人物规格合并为独立页面（页签切换）。
-纯静态多文件结构，**没有打包步骤**——双击 `v2/index.html` 就能玩；
+主页即游戏。地图编辑器是主页内的一个模式（顶栏「地图编辑」切换），  
+素材库与人物规格合并为独立页面（页签切换）。  
+纯静态多文件结构，**没有打包步骤**——双击 `v2/index.html` 就能玩；  
 像素素材与页面数据由 `tools/` 下的 Python 管线生成。
 
 ## 目录结构
@@ -37,24 +37,24 @@ python tools/run_test.py      全量回归（游戏 / 编辑器 / 集成 / AI / 
 python tools/sucai_logo.py    只重新生成 logo
 ```
 
-无头浏览器路径默认取 `C:\Program Files (x86)\...\msedge.exe`，
+无头浏览器路径默认取 `C:\Program Files (x86)\...\msedge.exe`，  
 可用环境变量 `QQTANG_EDGE_PATH` 覆盖。
 
 ## 工作流约定
 
 - **改游戏 / 编辑器代码**：直接改 `v2/js/game/*.js`、`v2/js/editor.js`、css、html，浏览器刷新即生效，无需构建。
 - **别改 `v2/data/*`**：全是生成物。
-- **改素材**：`assets/sucai/*.svg` 是真源，管线**不覆盖已存在的文件**（手调的满格炮弹等都以文件为准）；
+- **改素材**：`assets/sucai/*.svg` 是真源，管线**不覆盖已存在的文件**（手调的满格炮弹等都以文件为准）；  
   新增素材在 `tools/sucai_*.py` 里定义后跑 `build_v2.py` 生成初稿，之后直接改 SVG 文件精修。
 - **加地图**：JSON 丢进 `tools/maps/`，重跑 `build_v2.py`；字段规范见 `tools/maps/README.md`。
-- 游戏逻辑原本是单文件 `main.js`，现按原分段切成 `js/game/01-const.js … 22-boot.js`，
+- 游戏逻辑原本是单文件 `main.js`，现按原分段切成 `js/game/01-const.js … 22-boot.js`，  
   加载顺序即原语句顺序，各文件共享全局作用域（勿包裹 IIFE）。
-- 编辑器（`js/editor.js`）是 IIFE 隔离的页内模式；测试钩子 `window.__game` / `window.__editor`，
+- 编辑器（`js/editor.js`）是 IIFE 隔离的页内模式；测试钩子 `window.__game` / `window.__editor`，  
   断言在 `tools/tests/*.js`，跑法见 `tools/run_test.py`。
 - 「用这张图开一局」= 编辑器存图 → `__game.addMap()` → 页内切回游戏模式（不再导出单文件网页）。
 
 ## 在线托管（GitHub Pages）
 
-仓库公开托管于 `Chitandaaaaa/QQTang`，推 main 即发布。根目录 `index.html`
-只是个跳板，立即重定向到 `v2/index.html`（主页即游戏）；
+仓库公开托管于 `Chitandaaaaa/QQTang`，推 main 即发布。根目录 `index.html`  
+只是个跳板，立即重定向到 `v2/index.html`（主页即游戏）；  
 素材库在 `v2/gallery.html`。`sucai/` 参考图不入库。
