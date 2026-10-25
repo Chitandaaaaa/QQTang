@@ -1,0 +1,61 @@
+{
+  "id": "u_mvnnpbs06yg",
+  "name": "2026",
+  "sub": "CUSTOM",
+  "wall": "wall-icebrick",
+  "pillar": "wall-icepillar",
+  "crate": "prop-iceblock",
+  "urn": "prop-iceblock",
+  "chest": "prop-icechest",
+  "floor": {
+    "base": "tile-ice",
+    "lane": "tile-ice-snow",
+    "laneX": 10,
+    "emblemAt": [
+      10,
+      10
+    ],
+    "emblem": "tile-ice-snow",
+    "speckle": 0
+  },
+  "frows": [
+    "777777777777777777777",
+    "777777777777777777777",
+    "778888888888888888887",
+    "788888888888888888887",
+    "788888888888888888887",
+    "778888888888888888887",
+    "778888888888888888887",
+    "788888888888888888887",
+    "788888888888888888887",
+    "788888888888888888887",
+    "777777777777777777777",
+    "777777777777777777777"
+  ],
+  "pal": {
+    "c": "prop-iceblock"
+  },
+  "dust": "#CDE9FA",
+  "dust2": "#7DC2EC",
+  "debris": [
+    "#AFDCF7",
+    "#7DC2EC",
+    "#EDF7FE"
+  ],
+  "decor": null,
+  "drop": 0.5,
+  "rows": [
+    "##$###d####$##d##$###",
+    "#...................#",
+    "#cccc.cccP.cccc.cccc#",
+    "#...c.c1.c....c.c.d.#",
+    "#...c.c..c....c.c...$",
+    "dcccP.c.dc.cccP.cccc#",
+    "#c....c..c.c....c..cd",
+    "$c....c..c.c2.d.c..c#",
+    "#cdcc.cccP.cccc.cccP#",
+    "#...................#",
+    "#...................#",
+    "##$###d####$##d##$###"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "u_mvnz3avacx6",
+  "name": "冰面",
+  "sub": "CUSTOM",
+  "wall": "wall-icebrick",
+  "pillar": "wall-icepillar",
+  "crate": "prop-iceblock",
+  "urn": "prop-iceblock",
+  "chest": "prop-icechest",
+  "floor": {
+    "base": "tile-ice",
+    "lane": "tile-ice-snow",
+    "laneX": 10,
+    "emblemAt": [
+      10,
+      10
+    ],
+    "emblem": "tile-ice-snow",
+    "speckle": 0
+  },
+  "frows": [
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777",
+    "777777777777777777777"
+  ],
+  "pal": {
+    "s": "prop-snowblock",
+    "c": "prop-iceblock",
+    "P": "wall-icepillar",
+    "d": "prop-snowman",
+    "#": "wall-icebrick"
+  },
+  "dust": "#CDE9FA",
+  "dust2": "#7DC2EC",
+  "debris": [
+    "#AFDCF7",
+    "#7DC2EC",
+    "#EDF7FE"
+  ],
+  "decor": null,
+  "drop": 0.5,
+  "rows": [
+    "####################P",
+    "#1....sscccccccccccc#",
+    "#...ccssscccccccccPc#",
+    "#..ccssssc..........#",
+    "#..csssscc.....scc..#",
+    "#..ccsscc....ccscc..#",
+    "#..Pcccc....cccssss.#",
+    "#..........Pcsssscc.#",
+    "#...........ccssssc.#",
+    "#ccPdcccccccPcssssc.#",
+    "#cccccccccccccssscc2#",
+    "#####################"
+  ]
+}

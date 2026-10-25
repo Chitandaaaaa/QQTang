@@ -1,0 +1,37 @@
+{
+  "id": "ice",
+  "name": "冰原",
+  "sub": "FROZEN FIELD",
+  "wall": "wall-icebrick",
+  "pillar": "wall-icepillar",
+  "crate": "prop-iceblock",
+  "urn": "prop-iceblock",
+  "chest": "prop-icechest",
+  "floor": {
+    "base": "tile-ice",
+    "lane": "tile-ice-snow",
+    "laneX": 10,
+    "emblemAt": [10, 10],
+    "emblem": "tile-ice-snow",
+    "speckle": 0.08
+  },
+  "dust": "#CDE9FA",
+  "dust2": "#7DC2EC",
+  "debris": ["#AFDCF7", "#7DC2EC", "#EDF7FE"],
+  "decor": "prop-snowman",
+  "drop": 0.5,
+  "rows": [
+    "#####################",
+    "#1PP...........ccPP.#",
+    "#.PP.$ccc$.....c.PPc#",
+    "#..P...c.s.c...c.P.$#",
+    "#.c.c.ccc...cc......#",
+    "#.c.c.ccc...ccc.c.c.#",
+    "#.c.c.ccc...ccc.c.c.#",
+    "#......cc...ccc.c.c.#",
+    "#c.P.$...c.s.c...P..#",
+    "#cPP.c.....c$cc$.PP.#",
+    "#.PPcc...........PP2#",
+    "#####################"
+  ]
+}

@@ -1,0 +1,50 @@
+<!-- QQ糖 夺宝 · 彩虹爆炸格 · 像素素材（透明底） -->
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges" data-grid="32x32">
+<title>彩虹爆炸格 · boom-cell-rainbow</title>
+  <rect x="0" y="0" width="32" height="1" fill="#FF9EB6"/>
+  <rect x="0" y="1" width="32" height="1" fill="#FF5E86"/>
+  <rect x="0" y="2" width="32" height="1" fill="#FF5E86"/>
+  <rect x="0" y="3" width="5" height="1" fill="#FF5E86"/>
+  <rect x="5" y="3" width="12" height="1" fill="#FFFFFF"/>
+  <rect x="17" y="3" width="15" height="1" fill="#FF5E86"/>
+  <rect x="0" y="4" width="32" height="1" fill="#C64968"/>
+  <rect x="0" y="5" width="32" height="1" fill="#FFB27A"/>
+  <rect x="0" y="6" width="32" height="1" fill="#FF8A4A"/>
+  <rect x="0" y="7" width="32" height="1" fill="#FF8A4A"/>
+  <rect x="0" y="8" width="32" height="1" fill="#FF8A4A"/>
+  <rect x="0" y="9" width="32" height="1" fill="#C66B39"/>
+  <rect x="0" y="10" width="7" height="1" fill="#FFE39A"/>
+  <rect x="7" y="10" width="9" height="1" fill="#FFFFFF"/>
+  <rect x="16" y="10" width="16" height="1" fill="#FFE39A"/>
+  <rect x="0" y="11" width="32" height="1" fill="#F7C74A"/>
+  <rect x="0" y="12" width="32" height="1" fill="#F7C74A"/>
+  <rect x="0" y="13" width="32" height="1" fill="#F7C74A"/>
+  <rect x="0" y="14" width="14" height="1" fill="#C09B39"/>
+  <rect x="14" y="14" width="4" height="1" fill="#FFFFFF"/>
+  <rect x="18" y="14" width="14" height="1" fill="#C09B39"/>
+  <rect x="0" y="15" width="14" height="1" fill="#C4F08C"/>
+  <rect x="14" y="15" width="4" height="1" fill="#FFFFFF"/>
+  <rect x="18" y="15" width="14" height="1" fill="#C4F08C"/>
+  <rect x="0" y="16" width="14" height="1" fill="#9BD95A"/>
+  <rect x="14" y="16" width="4" height="1" fill="#FFFFFF"/>
+  <rect x="18" y="16" width="14" height="1" fill="#9BD95A"/>
+  <rect x="0" y="17" width="4" height="1" fill="#9BD95A"/>
+  <rect x="4" y="17" width="14" height="1" fill="#FFFFFF"/>
+  <rect x="18" y="17" width="14" height="1" fill="#9BD95A"/>
+  <rect x="0" y="18" width="32" height="1" fill="#9BD95A"/>
+  <rect x="0" y="19" width="32" height="1" fill="#78A946"/>
+  <rect x="0" y="20" width="32" height="1" fill="#9BF2E0"/>
+  <rect x="0" y="21" width="32" height="1" fill="#63DFC0"/>
+  <rect x="0" y="22" width="32" height="1" fill="#63DFC0"/>
+  <rect x="0" y="23" width="32" height="1" fill="#4DAD95"/>
+  <rect x="0" y="24" width="32" height="1" fill="#A9DCFF"/>
+  <rect x="0" y="25" width="9" height="1" fill="#4FA8E8"/>
+  <rect x="9" y="25" width="9" height="1" fill="#FFFFFF"/>
+  <rect x="18" y="25" width="14" height="1" fill="#4FA8E8"/>
+  <rect x="0" y="26" width="32" height="1" fill="#4FA8E8"/>
+  <rect x="0" y="27" width="32" height="1" fill="#3D83B4"/>
+  <rect x="0" y="28" width="32" height="1" fill="#C9A6FF"/>
+  <rect x="0" y="29" width="32" height="1" fill="#9B6BE0"/>
+  <rect x="0" y="30" width="32" height="1" fill="#9B6BE0"/>
+  <rect x="0" y="31" width="32" height="1" fill="#7853AE"/>
+</svg>

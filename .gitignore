@@ -1,0 +1,18 @@
+# 无头浏览器临时配置（run_test.py 现在写系统临时目录，此处兜底）
+.edge_*/
+qqtang-edge/
+
+# 自动化测试/截图临时文件
+_probe_*.html
+_shot*.png
+_zoom.*
+.shot.png
+
+# Python
+__pycache__/
+
+# 笔记工具目录（如需纳入版本管理可删掉这行）
+.workbuddy/
+
+# 参考素材原图（任天堂版权图，只留本地，不进仓库）
+sucai/

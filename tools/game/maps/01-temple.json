@@ -1,0 +1,36 @@
+{
+  "id": "temple",
+  "name": "夺宝神殿",
+  "sub": "TEMPLE RELIC",
+  "wall": "wall-stone",
+  "pillar": "wall-pillar",
+  "crate": "prop-crate",
+  "urn": "prop-amphora",
+  "chest": "prop-chest",
+  "floor": {
+    "base": "tile-sand",
+    "lane": "tile-temple",
+    "laneX": null,
+    "emblemAt": [10, 5],
+    "emblem": "tile-carpet-emblem",
+    "speckle": 0
+  },
+  "dust": "#E9C87C",
+  "dust2": "#C08552",
+  "debris": ["#C08552", "#8B5A2B", "#E9C87C"],
+  "drop": 0.34,
+  "rows": [
+    "#####################",
+    "#1.c.c.c.c.c.c.c.c..#",
+    "#.P.P.P.P.P.P.P.P.P.#",
+    "#.c.c..o.....o..c.c.#",
+    "#.P.P.P.P.P.P.P.P.P.#",
+    "#.c..$..c...c..$..c.#",
+    "#.P.P.P.P.P.P.P.P.P.#",
+    "#.c.c..o.....o..c.c.#",
+    "#.P.P.P.P.P.P.P.P.P.#",
+    "#.c.c.c.c.c.c.c.c...#",
+    "#..................2#",
+    "#####################"
+  ]
+}
