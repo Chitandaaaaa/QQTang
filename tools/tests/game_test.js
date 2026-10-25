@@ -785,6 +785,7 @@
     /* ================ M 准备页：左上角品牌 + 选地图 ================ */
     G.map('temple');
     G.home();
+    truth('M0 顶栏有素材库按钮', !!document.getElementById('btnGallery'));
     const logoEl = document.querySelector('.brand .logo svg, .brand .logo img');
     const lr = logoEl && logoEl.getBoundingClientRect();
     truth('M1 左上角是 logo（svg 或 img）', !!logoEl && lr.width > 80 && lr.height > 40,

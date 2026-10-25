@@ -70,6 +70,7 @@
   .btn:hover{transform:translateY(-1px); box-shadow:0 5px 0 rgba(58,36,22,.16)}
   .btn:active{transform:translateY(2px); box-shadow:0 1px 0 rgba(58,36,22,.2)}
   .btn.on{background:var(--ink); color:#FFFBF1}
+  a.btn{text-decoration:none}
   .btn.gold{background:linear-gradient(160deg,#FFE29A,#F0C860 55%,#D9A441)}
   .btn.ghost{box-shadow:none; border-style:dashed; background:transparent}
 

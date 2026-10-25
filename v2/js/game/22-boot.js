@@ -42,6 +42,8 @@
       snd.textContent = state.muted ? '音效 关' : '音效 开';
       if (!state.muted) { audio(); tone(880, .08, 'triangle', .05); }
     };
+    const gal = $('btnGallery');
+    if (gal) gal.onclick = () => { window.open('gallery.html', '_blank'); };   // 新标签页，不打断对局
   }
 
   loadSprites().then(() => {

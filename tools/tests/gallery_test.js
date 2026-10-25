@@ -49,6 +49,8 @@
     eq('G14 排排站克隆出 svg', document.querySelectorAll('#lineupBox .slot svg').length, 8);
     eq('G15 共用底色 9 色', document.querySelectorAll('#specShared li').length, 9);
 
+    truth('G17 返回游戏链接', !!document.querySelector('.top-actions a[href="index.html"]'));
+
     /* ---- 5 切回素材库 ---- */
     document.getElementById('tabAssets').click();
     truth('G16 切回素材库', document.getElementById('specPanel').hidden &&
