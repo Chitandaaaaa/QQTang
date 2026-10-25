@@ -1,0 +1,479 @@
+/* =========================================================================
+   QQ糖 · 夺宝对决  —  游戏界面样式
+   ========================================================================= */
+:root{
+  --bg:#120E0B;
+  --panel:#1C1611;
+  --panel2:#241C15;
+  --line:#3A2416;
+  --line2:#5A3A22;
+  --gold:#EFC96A;
+  --gold2:#C89A3A;
+  --ink:#F3E4C8;
+  --dim:#9A8567;
+  --red:#A82A3B;
+  --teal:#3E9F9B;
+  --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
+  --mono:"Cascadia Mono","Consolas","SFMono-Regular",ui-monospace,monospace;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #2A1F15 0%, transparent 60%),
+    radial-gradient(900px 600px at 50% 120%, #1A1310 0%, transparent 60%),
+    var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+body::before{
+  /* 细小格纹底 */
+  content:"";
+  position:fixed; inset:0; pointer-events:none; opacity:.35;
+  background-image:
+    linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+  background-size:24px 24px;
+}
+body::after{
+  content:"";
+  position:fixed; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 50%, transparent 45%, rgba(0,0,0,.62) 100%);
+}
+
+.app{
+  position:relative; z-index:2;
+  height:100%;
+  display:flex; flex-direction:column;
+  gap:14px;
+  padding:16px 22px 12px;
+  max-width:1520px; margin:0 auto;
+}
+
+/* ------------------------------------------------------------------ 顶栏 */
+.bar{
+  position:relative;
+  flex:0 0 auto;
+  display:flex; align-items:center; gap:18px;
+}
+.bar > .ghost:first-of-type{margin-left:auto}
+.brand{display:flex; align-items:center; gap:14px}
+.brand .logo{display:block; flex:0 0 auto; line-height:0}
+.brand .logo svg{display:block; height:71px; width:auto}
+
+/* 比分 */
+.score{
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  display:flex; align-items:center; gap:14px;
+  padding:6px 18px;
+  border:2px solid var(--line);
+  border-radius:999px;
+  background:linear-gradient(180deg,#231A12,#181210);
+  box-shadow:0 0 0 1px rgba(239,201,106,.10) inset;
+}
+.score .side{display:flex; align-items:center; gap:8px}
+.score .side i{
+  font-style:normal; font-size:11px; letter-spacing:.14em; color:var(--dim);
+}
+.score .side b{
+  font-family:var(--mono); font-size:22px; line-height:1;
+  min-width:22px; text-align:center;
+  color:#2B1E12;
+  background:linear-gradient(180deg,#F6DFA6,#D8AC57);
+  border-radius:5px; padding:3px 6px;
+  box-shadow:0 2px 0 #6B4A24;
+  transition:transform .18s;
+}
+.score .side.hit b{transform:scale(1.28)}
+.score .vs{font-family:var(--mono); color:var(--line2); font-size:16px}
+
+button{font-family:inherit; cursor:pointer}
+.ghost{
+  font-size:11.5px; letter-spacing:.1em; color:var(--dim);
+  background:transparent; border:2px solid var(--line);
+  border-radius:9px; padding:8px 12px;
+  transition:.16s;
+}
+.ghost:hover{color:var(--gold); border-color:var(--line2)}
+
+/* ------------------------------------------------------------------ 主区 */
+main{
+  flex:1 1 auto; min-height:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 240px;
+  gap:18px;
+}
+
+/* 右侧属性栏：贴着内容区顶部排，别跟着画布居中漂 */
+.rail{
+  display:flex; flex-direction:column; gap:12px;
+  align-self:start;
+}
+
+/* 玩家卡 */
+.pcard{
+  position:relative;
+  display:flex; flex-direction:column; gap:10px;
+  padding:12px 12px 14px;
+  border:2px solid var(--line);
+  border-radius:14px;
+  background:
+    linear-gradient(180deg, rgba(239,201,106,.055), transparent 34%),
+    linear-gradient(180deg,#211913,#171210);
+  box-shadow:0 12px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.5) inset;
+  overflow:hidden;
+}
+.pcard::before{
+  content:""; position:absolute; inset:0 0 auto 0; height:3px;
+  background:linear-gradient(90deg,transparent,var(--ac),transparent);
+  opacity:.9;
+}
+.pcard[data-p="1"]{--ac:#EFC96A}
+.pcard[data-p="2"]{--ac:#4CA64C}
+.pcard.dead{filter:saturate(.35) brightness(.72)}
+.pcard.win{box-shadow:0 12px 28px rgba(0,0,0,.45), 0 0 0 2px var(--ac) inset}
+
+.pc-head{display:flex; align-items:center; gap:10px}
+.pc-face{
+  width:48px; height:58px; flex:0 0 auto;
+  display:grid; place-items:center;
+  border:2px solid var(--line); border-radius:9px;
+  background:radial-gradient(circle at 50% 70%, #33261A, #14100D);
+  overflow:hidden;
+}
+.pc-face img{width:32px; height:48px; display:block; image-rendering:pixelated}
+.pc-head h2{font-size:15px; letter-spacing:.06em}
+.pc-head p{
+  font-family:var(--mono); font-size:9px; letter-spacing:.2em;
+  color:var(--dim); margin-top:3px;
+}
+.pc-head .tag{
+  margin-left:auto; align-self:flex-start;
+  font-family:var(--mono); font-size:9px; letter-spacing:.12em;
+  padding:3px 6px; border-radius:4px;
+  color:#1A1208; background:var(--ac);
+}
+
+.pc-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:7px}
+.stat{
+  border:1.5px solid var(--line); border-radius:8px;
+  background:#14100D; padding:7px 8px 8px;
+}
+.stat span{
+  display:block; font-size:9.5px; letter-spacing:.16em; color:var(--dim);
+  margin-bottom:4px;
+}
+.stat b{
+  font-family:var(--mono); font-size:19px; line-height:1;
+  color:var(--ac); display:flex; align-items:baseline; gap:2px;
+}
+.stat b em{font-style:normal; font-size:11px; color:var(--dim)}
+
+.pc-keys{
+  margin-top:auto;
+  display:flex; flex-direction:column; gap:6px;
+  padding-top:10px; border-top:1px dashed rgba(239,201,106,.16);
+}
+/* 局内换炮弹：一排小图标 + 「炮弹」小标，点谁下一颗弹就是谁 */
+.pc-bombs{
+  display:flex; align-items:center; gap:6px;
+  padding-top:9px; border-top:1px dashed rgba(239,201,106,.16);
+}
+.pc-bombs::before{
+  content:"炮弹";
+  font-size:9.5px; letter-spacing:.16em; color:var(--dim); flex:0 0 auto;
+}
+.pc-bombs .bomb-strip{flex:1 1 auto; min-width:0}
+.pc-bombs .bkind{width:18px; height:18px; border-radius:5px}
+.pc-bombs .bkind img{width:14px; height:14px}
+.pcard .bkind.on{border-color:var(--ac)}
+.krow{display:flex; align-items:center; gap:6px; font-size:10.5px; color:var(--dim)}
+.krow .lbl{margin-left:auto; font-size:10px; letter-spacing:.1em}
+kbd{
+  font-family:var(--mono); font-size:10px; line-height:1;
+  min-width:20px; height:20px; padding:0 5px;
+  display:inline-grid; place-items:center;
+  color:var(--ink);
+  border:1.5px solid var(--line2); border-bottom-width:3px;
+  border-radius:5px; background:#1E1710;
+}
+kbd.wide{min-width:auto; padding:0 8px}
+kbd.space{min-width:38px}
+
+/* ------------------------------------------------------------------ 舞台 */
+.stage{
+  position:relative;
+  flex:0 0 auto;
+  align-self:start;
+  display:flex; align-items:flex-start; justify-content:center;
+  overflow:hidden;
+}
+#cv{
+  display:block;
+  width:672px; height:384px;      /* 由脚本按容器等比计算 */
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+  border-radius:3px;
+  box-shadow:0 0 0 2px #0A0705, 0 0 26px rgba(0,0,0,.8) inset;
+  background:#0A0705;
+}
+
+/* 覆盖层 */
+.overlay{
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  background:rgba(9,6,4,.82);
+  backdrop-filter:blur(3px);
+  opacity:0; pointer-events:none;
+  transition:opacity .26s;
+  z-index:5;
+  padding:14px 20px;
+}
+.overlay.on{opacity:1; pointer-events:auto}
+.ov-box{
+  width:min(620px,100%);
+  max-height:100%; overflow-y:auto;      /* 万一内容比画布还高，还能滚到按钮 */
+  scrollbar-width:none;                  /* 滚动条不外露，内容超高等比缩进滚动即可 */
+  text-align:center;
+  padding:20px 28px 16px;
+  border:2px solid var(--line);
+  border-radius:16px;
+  background:
+    linear-gradient(180deg, rgba(239,201,106,.05), transparent 40%),
+    linear-gradient(180deg, rgba(36,27,19,.97), rgba(19,14,10,.97));
+  box-shadow:0 34px 80px rgba(0,0,0,.62), 0 0 0 1px rgba(239,201,106,.14) inset;
+  transform:translateY(8px) scale(.985);
+  transition:transform .3s cubic-bezier(.2,1.4,.5,1);
+}
+.ov-box::-webkit-scrollbar{display:none}
+.overlay.on .ov-box{transform:none}
+.ov-kicker{
+  font-family:var(--mono); font-size:10px; letter-spacing:.42em;
+  color:var(--gold2); margin-bottom:9px;
+}
+.ov-title{
+  font-size:30px; font-weight:900; letter-spacing:.08em; line-height:1.1;
+  color:#FFF3D2;
+  text-shadow:0 0 26px rgba(239,201,106,.45), 0 4px 0 #4A3018;
+  margin-bottom:8px;
+}
+.ov-sub{font-size:12.5px; color:#B9A489; line-height:1.75; margin-bottom:14px}
+.ov-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+  margin:0 auto 14px; width:min(480px,100%);
+}
+.ov-cell{
+  border:1.5px solid var(--line); border-radius:10px;
+  padding:9px 12px 10px; text-align:left;
+  background:rgba(30,23,16,.72);
+}
+.ov-cell h4{
+  font-size:11px; letter-spacing:.16em; color:var(--gold);
+  margin-bottom:6px; display:flex; align-items:center; gap:6px;
+}
+.ov-cell h4 .dot{width:6px; height:6px; border-radius:2px; background:currentColor}
+.kline{display:flex; align-items:center; gap:5px; margin-top:6px}
+.kline i{
+  font-style:normal; font-size:10.5px; color:var(--dim); margin-left:3px;
+}
+
+/* 炮弹选择条：准备页（覆盖层）和局内面板共用一套按钮。
+   点谁用谁，选中框颜色跟着人走 —— P1 金 / P2 绿。 */
+.bomb-strip{
+  display:flex; gap:3px; justify-content:space-between;
+}
+.ov-cell .bomb-strip{margin-top:7px}
+.bkind{
+  width:20px; height:20px; padding:0; line-height:0;
+  display:grid; place-items:center;
+  border:1.5px solid var(--line); border-radius:6px;
+  background:#14100D;
+  transition:border-color .14s, box-shadow .14s, transform .14s;
+}
+.bkind img{width:16px; height:16px; display:block; image-rendering:pixelated}
+.bkind:hover{border-color:var(--line2); transform:translateY(-1px)}
+.bkind.on{
+  border-color:#EFC96A;
+  box-shadow:0 0 0 1px rgba(239,201,106,.38) inset, 0 0 9px rgba(239,201,106,.28);
+}
+.ov-cell.p2 .bkind.on{
+  border-color:#4CA64C;
+  box-shadow:0 0 0 1px rgba(76,166,76,.4) inset, 0 0 9px rgba(76,166,76,.3);
+}
+
+/* 开局前选地图 */
+.ov-label{
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.3em;
+  color:var(--gold2); text-align:left;
+}
+.ov-labelrow{
+  width:min(520px,100%); margin:0 auto 7px;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.ov-count{
+  font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--dim);
+}
+/* 地图可能不止两张（编辑器存进来的），所以横着排 —— 高度固定，多了就横向滚；
+   滚动条不外露，放不下时两端出现翻页箭头 */
+.ov-maps-wrap{
+  position:relative;
+  width:min(520px,100%); margin:0 auto 12px;
+}
+.ov-maps{
+  display:flex; flex-wrap:nowrap; gap:10px;
+  width:100%; padding:2px 2px 8px;
+  overflow-x:auto; overflow-y:hidden;
+  scrollbar-width:none;
+  scroll-snap-type:x proximity;
+}
+.ov-maps::-webkit-scrollbar{display:none}
+.maps-nav{
+  position:absolute; top:38%; transform:translateY(-50%);
+  width:27px; height:27px; border-radius:50%;
+  border:1.5px solid rgba(239,201,106,.5);
+  background:rgba(20,14,9,.8); color:var(--gold);
+  font-size:16px; line-height:1; cursor:pointer; z-index:2;
+  display:flex; align-items:center; justify-content:center;
+  transition:background .14s, opacity .14s;
+}
+.maps-nav:hover{background:rgba(64,46,26,.92)}
+.maps-nav.prev{left:-6px}
+.maps-nav.next{right:-6px}
+.maps-nav[disabled]{opacity:.25; cursor:default}
+.ov-maps-wrap:not(.paged) .maps-nav{display:none}
+/* 宽度故意做成「两张半」，露出第三张的一角，让人看出右边还能拖 */
+.ov-maps .map-card{flex:0 0 172px; scroll-snap-align:start}
+.map-card{
+  position:relative; display:block; padding:8px; text-align:left;
+  border:2px solid var(--line); border-radius:11px;
+  background:rgba(30,23,16,.7);
+  transition:border-color .16s, box-shadow .16s, transform .16s;
+}
+.map-card:hover{border-color:var(--line2); transform:translateY(-1px)}
+.map-card.on{
+  border-color:var(--gold);
+  background:rgba(48,36,22,.85);
+  box-shadow:0 0 0 1px rgba(239,201,106,.3) inset, 0 10px 24px rgba(0,0,0,.5);
+}
+.map-card .thumb{
+  display:block; width:100%; aspect-ratio:21 / 12;
+  border-radius:6px; overflow:hidden;
+  background:#0D0A07;
+  box-shadow:0 0 0 1px rgba(0,0,0,.6) inset;
+}
+.map-card .thumb canvas{
+  display:block; width:100%; height:100%;
+  image-rendering:pixelated;
+}
+.map-card .nm{display:flex; align-items:baseline; gap:7px; margin-top:8px}
+.map-card .nm b{font-size:12.5px; letter-spacing:.06em}
+.map-card .nm i{
+  font-style:normal; font-family:var(--mono);
+  font-size:8.5px; letter-spacing:.16em; color:var(--dim);
+}
+.map-card .tick{
+  position:absolute; top:13px; left:13px;
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.14em;
+  padding:3px 6px; border-radius:4px;
+  color:#22160A; background:var(--gold);
+  opacity:0; transform:translateY(-3px);
+  transition:.16s;
+}
+.map-card.on .tick{opacity:1; transform:none}
+/* 编辑器做的图，右上角盖个紫章，和内置图区分开 */
+.map-card .flag{
+  position:absolute; top:13px; right:13px;
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.14em;
+  padding:3px 6px; border-radius:4px;
+  color:#F3EFFC; background:rgba(150,128,204,.9);
+}
+
+.btn{
+  font-size:14px; font-weight:800; letter-spacing:.14em;
+  color:#22160A;
+  background:linear-gradient(180deg,#FBE7B4,#E0B45E 60%,#C79A45);
+  border:2px solid #7A5525;
+  border-radius:11px;
+  padding:13px 34px;
+  box-shadow:0 4px 0 #6B4A24, 0 10px 24px rgba(239,201,106,.22);
+  transition:transform .12s, box-shadow .12s;
+}
+.btn:hover{transform:translateY(-1px); box-shadow:0 5px 0 #6B4A24, 0 14px 30px rgba(239,201,106,.3)}
+.btn:active{transform:translateY(3px); box-shadow:0 1px 0 #6B4A24}
+.btn.small{font-size:12px; padding:10px 20px; letter-spacing:.1em}
+
+.result-face{
+  width:74px; height:92px; margin:0 auto 4px;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.6));
+  animation:floaty 2.4s ease-in-out infinite;
+}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* 分辨率偏窄时比分回到常规流，避免压在按钮上 */
+@media (max-width:1300px){
+  .score{position:static; transform:none; margin:0 auto}
+}
+
+@media (max-width:1180px){
+  main{display:flex; flex-direction:column; align-items:stretch; justify-content:center; gap:12px}
+  .rail{flex-direction:row; width:100%}
+  .pcard{flex:1 1 0; flex-direction:row; align-items:center; gap:14px; padding:10px 14px}
+  .pc-stats{grid-template-columns:repeat(3,1fr); min-width:0; flex:1}
+  .pc-keys{display:none}
+  .pc-bombs{display:none}   /* 横排卡片放不下，窄屏回到开局界面换弹 */
+  .stage{margin:0 auto; max-width:100%}
+  .score{position:static; transform:none; margin:0 auto}
+}
+@media (max-width:720px){
+  .app{padding:10px}
+  .brand p{display:none}
+  .brand .logo svg{height:52px}
+  .ov-title{font-size:26px}
+  .ov-grid{grid-template-columns:1fr}
+  #cv{width:100%; height:auto}
+}
+
+/* ------------------------------------------------------------- 人机模式 UI */
+.ov-modes{display:flex; gap:10px; justify-content:center; margin:0 0 14px}
+.mode-btn{
+  padding:8px 26px; border-radius:20px;
+  border:1px solid rgba(120,90,50,.35);
+  background:rgba(255,255,255,.4); color:#5a4327;
+  font-family:var(--mono); font-size:13px; letter-spacing:.12em; cursor:pointer;
+  transition:transform .14s, background .14s, color .14s;
+}
+.mode-btn:hover{transform:translateY(-1px)}
+.mode-btn.on{
+  background:linear-gradient(180deg,#EFC96A,#E0A93E);
+  color:#3a2a12; border-color:#E0A93E; font-weight:800;
+  box-shadow:0 3px 10px rgba(239,201,106,.35);
+}
+
+.ai-badge{
+  display:inline-block; margin-left:6px; padding:1px 8px; border-radius:10px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.12em; color:#0d2a1a;
+  background:linear-gradient(180deg,#9BE08F,#5FB15A);
+}
+[hidden]{display:none !important}
+.pcard.ai .pc-keys{display:none}
+.pcard.ai .pc-head h2::after{content:" · AI"; color:#5FB15A; font-size:11px; letter-spacing:.1em}
+
+/* =========================================================================
+   v2 · 主页 = 游戏 + 页内编辑器：按 body[data-mode] 显隐两个区域
+   ========================================================================= */
+#gameApp{flex:1 1 auto; min-height:0; display:flex}
+#gameApp main{flex:1 1 auto; min-height:0}
+#editorApp{display:none}
+
+body[data-mode="editor"] #gameApp{display:none}
+body[data-mode="editor"] .score,
+body[data-mode="editor"] #btnMap,
+body[data-mode="editor"] #btnRestart,
+body[data-mode="editor"] #btnSound{display:none}
+
+/* logo 以 <img> 引用（单文件版当年是内联 svg） */
+.brand .logo img{display:block; height:71px; width:auto}

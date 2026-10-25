@@ -1,0 +1,213 @@
+/* =========================================================================
+   QQ糖 · 地图编辑器（页内模式）
+   全部选择器挂在 #editorApp 下，避免与游戏样式互相污染；
+   页面底色 / 全局变量 / body 背景由 game.css 提供（同一套设计系统）。
+   ========================================================================= */
+:root{
+  --ok:#7FC98A;
+  --warn:#E8B04B;
+  --bad:#D9614F;
+}
+
+#editorApp{
+  position:relative; z-index:2;
+  flex:1 1 auto; min-height:0;
+  display:none;
+  flex-direction:column; gap:12px;
+}
+body[data-mode="editor"] #editorApp{display:flex}
+
+/* ------------------------------------------------------------------ 工具条 */
+.ebar{flex:0 0 auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.ettl b{font-size:16px; letter-spacing:.1em}
+.ettl i{
+  display:block; font-style:normal; font-family:var(--mono);
+  font-size:8.5px; letter-spacing:.24em; color:var(--dim); margin-top:3px;
+}
+.ebar .spacer{flex:1 1 auto}
+#editorApp .primary{
+  font-size:11.5px; font-weight:800; letter-spacing:.08em; color:#22160A;
+  background:linear-gradient(180deg,#FBE7B4,#E0B45E 60%,#C79A45);
+  border:2px solid #7A5525; border-radius:9px; padding:8px 14px;
+  box-shadow:0 3px 0 #6B4A24; transition:.12s;
+}
+#editorApp .primary:hover{transform:translateY(-1px)}
+#editorApp .primary:active{transform:translateY(2px); box-shadow:0 1px 0 #6B4A24}
+
+/* ------------------------------------------------------------------ 主区 */
+.ed-grid{
+  flex:1 1 auto; min-height:0;
+  display:grid; grid-template-columns:250px minmax(0,1fr) 300px; gap:14px;
+}
+#editorApp .panel{
+  border:2px solid var(--line); border-radius:13px;
+  background:linear-gradient(180deg,#211913,#171210);
+  box-shadow:0 12px 28px rgba(0,0,0,.4);
+  padding:12px; overflow-y:auto; overflow-x:hidden;
+  scrollbar-width:thin;
+}
+#editorApp .panel::-webkit-scrollbar{width:6px}
+#editorApp .panel::-webkit-scrollbar-thumb{background:var(--line2); border-radius:3px}
+
+/* ------------------------------------------------------------------ 素材栏 */
+#editorApp .grp{margin-bottom:13px}
+#editorApp .grp h4{
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.22em;
+  color:var(--gold2); margin-bottom:7px; font-weight:600;
+}
+#editorApp .brushes{display:grid; grid-template-columns:repeat(3,1fr); gap:6px}
+#editorApp .br{
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  border:2px solid var(--line); border-radius:8px;
+  background:#14100D; padding:5px 2px 4px; transition:.14s;
+}
+#editorApp .br:hover{border-color:var(--line2)}
+#editorApp .br img{width:34px; height:34px; display:block; image-rendering:pixelated}
+#editorApp .br span{font-size:9px; line-height:1.25; color:var(--dim); text-align:center}
+#editorApp .br.on{
+  border-color:var(--gold); background:#2E2317;
+  box-shadow:0 0 0 1px rgba(239,201,106,.25) inset;
+}
+#editorApp .br.on span{color:var(--ink)}
+#editorApp .br.spawn span{font-size:11px; font-weight:700; letter-spacing:.06em}
+
+/* 障碍标签：可炸 / 不可炸、可推动 / 不可推动 */
+#editorApp .br .tags{display:flex; flex-wrap:wrap; gap:3px; justify-content:center}
+#editorApp .chip{
+  font-family:var(--mono); font-size:8px; line-height:1.5; letter-spacing:0;
+  padding:0 3px; border-radius:3px;
+  border:1px solid var(--line2); color:var(--dim); background:#1B150F;
+  white-space:nowrap;
+}
+#editorApp .chip.yes{color:#12200F; background:var(--ok); border-color:var(--ok)}
+#editorApp .chip.mute{color:var(--ink); background:#241C15}
+#editorApp .br.on .chip{border-color:var(--line2)}
+
+/* 侧栏标签速查 */
+#editorApp .tagrow{
+  display:grid; grid-template-columns:52px auto; gap:2px 8px;
+  align-items:center; font-size:10px; margin-bottom:6px;
+}
+#editorApp .tagrow b{color:var(--ink); font-weight:700}
+#editorApp .tagrow i{
+  grid-column:1 / -1; font-style:normal; font-size:9.5px;
+  color:var(--dim); line-height:1.45;
+}
+
+/* ------------------------------------------------------------------ 画板 */
+#editorApp .board{display:flex; flex-direction:column; gap:9px; min-width:0}
+#editorApp .tools{display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+#editorApp .seg{display:flex; border:2px solid var(--line); border-radius:9px; overflow:hidden}
+#editorApp .seg button{
+  border:0; background:#14100D; color:var(--dim);
+  font-size:11px; letter-spacing:.06em; padding:7px 11px; transition:.14s;
+}
+#editorApp .seg button + button{border-left:2px solid var(--line)}
+#editorApp .seg button:hover{color:var(--gold)}
+#editorApp .seg button.on{background:#2E2317; color:var(--gold)}
+#editorApp .tools .lab{
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.2em;
+  color:var(--gold2); margin-right:2px;
+}
+#editorApp .tools .div{width:1px; height:20px; background:var(--line); margin:0 3px}
+
+#editorApp .ecwrap{
+  flex:1 1 auto; min-height:0;
+  display:grid; place-items:center; overflow:hidden;
+}
+#ecv{
+  display:block;
+  image-rendering:pixelated; image-rendering:crisp-edges;
+  border-radius:3px; cursor:crosshair;
+  box-shadow:0 0 0 2px #0A0705, 0 0 34px rgba(0,0,0,.75) inset;
+  background:#0A0705;
+  touch-action:none;
+}
+#editorApp .hint{
+  flex:0 0 auto; font-size:10.5px; color:var(--dim); line-height:1.7;
+  display:flex; gap:14px; flex-wrap:wrap;
+}
+#editorApp .hint b{color:var(--gold2); font-weight:600}
+
+/* ------------------------------------------------------------------ 右栏 */
+#editorApp .fld{margin-bottom:11px}
+#editorApp .fld > label{
+  display:block; font-family:var(--mono); font-size:8.5px;
+  letter-spacing:.2em; color:var(--gold2); margin-bottom:5px;
+}
+#editorApp .fld .row2{display:flex; gap:6px; align-items:center}
+#editorApp input[type=text],#editorApp select{
+  width:100%; background:#14100D; color:var(--ink);
+  border:2px solid var(--line); border-radius:7px;
+  padding:7px 9px; font-size:12px; font-family:inherit;
+}
+#editorApp input[type=text]:focus,#editorApp select:focus{outline:0; border-color:var(--line2)}
+#editorApp input[type=range]{width:100%; accent-color:var(--gold2)}
+
+#editorApp .chk{
+  border-top:1px dashed rgba(239,201,106,.16);
+  padding-top:10px; margin-top:12px;
+}
+#editorApp .chk h4,#editorApp .lib h4{
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.22em;
+  color:var(--gold2); margin-bottom:8px; font-weight:600;
+}
+#editorApp .crow{
+  display:flex; align-items:center; gap:7px;
+  font-size:10.5px; color:var(--dim); margin-bottom:6px; line-height:1.4;
+}
+#editorApp .crow i{width:7px; height:7px; border-radius:2px; flex:0 0 auto; font-style:normal}
+#editorApp .crow b{margin-left:auto; font-family:var(--mono); font-size:10.5px; color:var(--ink); font-weight:400}
+#editorApp .crow.warn{color:var(--warn)}
+
+#editorApp .lib{margin-top:14px; border-top:1px dashed rgba(239,201,106,.16); padding-top:10px}
+#editorApp .item{
+  display:flex; align-items:center; gap:7px;
+  border:1.5px solid var(--line); border-radius:8px;
+  background:#14100D; padding:6px 7px; margin-bottom:6px;
+}
+#editorApp .item.on{border-color:var(--gold); background:#2A2015}
+#editorApp .item .mini{
+  width:38px; height:22px; flex:0 0 auto; border-radius:3px;
+  image-rendering:pixelated; background:#0D0A07;
+  box-shadow:0 0 0 1px rgba(0,0,0,.6) inset;
+}
+#editorApp .item .nm{
+  flex:1 1 auto; min-width:0; font-size:11.5px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+#editorApp .item .nm em{
+  display:block; font-style:normal; font-family:var(--mono);
+  font-size:8px; letter-spacing:.14em; color:var(--dim); margin-top:2px;
+}
+#editorApp .mini-btn{
+  border:1.5px solid var(--line); background:transparent; color:var(--dim);
+  border-radius:5px; font-size:10px; padding:3px 6px; flex:0 0 auto;
+}
+#editorApp .mini-btn:hover{color:var(--gold); border-color:var(--line2)}
+#editorApp .mini-btn.del:hover{color:var(--bad); border-color:var(--bad)}
+#editorApp .empty{font-size:10.5px; color:#6E5B44; line-height:1.7}
+
+/* ------------------------------------------------------------------ 提示条 */
+#editorApp .toast{
+  position:fixed; left:50%; bottom:24px; z-index:50;
+  transform:translate(-50%,12px); opacity:0; pointer-events:none;
+  font-size:12px; letter-spacing:.04em;
+  padding:10px 20px; border-radius:10px;
+  border:2px solid var(--line2);
+  background:linear-gradient(180deg,#2A2015,#1A1410);
+  box-shadow:0 14px 34px rgba(0,0,0,.6);
+  transition:.22s;
+}
+#editorApp .toast.on{opacity:1; transform:translate(-50%,0)}
+#editorApp .toast.bad{border-color:var(--bad); color:#F6C9BE}
+
+@media (max-width:1280px){
+  #editorApp .ed-grid{grid-template-columns:210px minmax(0,1fr) 260px; gap:10px}
+  #editorApp .brushes{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:1080px){
+  #editorApp .ed-grid{grid-template-columns:1fr; grid-template-rows:auto auto auto; overflow-y:auto}
+  #editorApp .panel{max-height:240px}
+  #editorApp .ecwrap{min-height:300px}
+}

@@ -1,26 +1,44 @@
 # -*- coding: utf-8 -*-
-"""构建 + 无头浏览器跑回归：
-   1) 游戏本体    game/_test.js
-   2) 地图编辑器  editor/_test.js
-   3) 集成：把编辑器导出的地图塞进 localStorage，验证游戏真的用上了 game/_itest.js
+"""QQ糖 v2 · 回归测试：生成数据 + 无头浏览器跑五套断言
+
+    python tools/run_test.py          （或设 QQTANG_EDGE_PATH 指定浏览器）
+
+    1) 游戏本体   tests/game_test.js    -> v2/index.html
+    2) 地图编辑器 tests/editor_test.js   -> v2/index.html（页内模式）
+    3) 集成       tests/itest.js        -> 编辑器图经 localStorage 进游戏
+    4) AI 人机    tests/aitest.js       -> v2/index.html
+    5) 素材库     tests/gallery_test.js -> v2/gallery.html（含人物规格页签）
+
+原理：把 v2/ 拷进系统临时目录，测试脚本注进探针页副本，无头 Edge 跑完
+从 data-diag 属性取断言结果。页面本身不因测试而改动。
 """
+import html as H
 import io
 import json
-import html as H
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DESIGN = os.path.dirname(HERE)
-EDGE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-PY = sys.executable
-# 浏览器配置和探针页放系统临时目录，不污染项目
+V2 = os.path.join(DESIGN, "v2")
+EDGE = os.environ.get("QQTANG_EDGE_PATH") or \
+    r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 PROFILES = os.path.join(tempfile.gettempdir(), "qqtang-edge")
+WORK = os.path.join(PROFILES, "v2")           # 探针工作目录：v2 的完整拷贝
 
-GAME = os.path.join(DESIGN, "QQTang-battle-v1.html")
-EDITOR = os.path.join(DESIGN, "QQTang-mapeditor-v1.html")
+
+def build_data():
+    subprocess.run([sys.executable, os.path.join(HERE, "build_v2.py")], check=True, cwd=HERE)
+
+
+def prepare_work():
+    """把 v2/ 拷进临时目录，测试只改拷贝，不碰源文件"""
+    if os.path.exists(WORK):
+        shutil.rmtree(WORK)
+    shutil.copytree(V2, WORK)
 
 
 def run_edge(page, prof, budget=25000):
@@ -53,17 +71,16 @@ def report(title, d):
     return len(d["bad"])
 
 
-def suite(out_html, test_js, prof, inject_head=""):
-    """把测试脚本塞到页面尾部（可选：在第一个 <script> 前插一段）"""
-    html = io.open(out_html, encoding="utf-8").read()
-    js = io.open(test_js, encoding="utf-8").read()
+def suite(page_html, probe_name, test_js, prof, inject_head=""):
+    """把测试脚本塞进探针页尾部（可选：在第一个 <script> 前插一段）"""
+    html = io.open(os.path.join(WORK, page_html), encoding="utf-8").read()
+    js = io.open(os.path.join(HERE, "tests", test_js), encoding="utf-8").read()
     if inject_head:
         html = html.replace("<script>", inject_head + "<script>", 1)
     html = html.replace("</body>", "<script>" + js + "</script></body>")
-    tmp = os.path.join(PROFILES, "_probe_" + os.path.basename(prof) + ".html")
-    os.makedirs(PROFILES, exist_ok=True)
-    io.open(tmp, "w", encoding="utf-8").write(html)
-    return run_edge(tmp, prof)
+    probe = os.path.join(WORK, probe_name)
+    io.open(probe, "w", encoding="utf-8").write(html)
+    return run_edge(probe, prof)
 
 
 # ---------------------------------------------------------------- 集成用的地图
@@ -77,6 +94,7 @@ def custom_map():
             else:
                 line += "."
         rows.append(line)
+
     def put(x, y, ch):
         rows[y] = rows[y][:x] + ch + rows[y][x + 1:]
     put(1, 1, "1")
@@ -95,28 +113,24 @@ def custom_map():
 
 
 def main():
-    subprocess.run([PY, os.path.join(HERE, "build_game.py")], check=True, cwd=HERE)
-    subprocess.run([PY, os.path.join(HERE, "build_editor.py")], check=True, cwd=HERE)
+    build_data()
+    prepare_work()
 
-    bad = 0
-    print("\n=== 1/3 游戏本体 ===")
-    bad += report("游戏", suite(GAME, os.path.join(HERE, "game", "_test.js"),
-                                os.path.join(PROFILES, "game")))
-
-    print("\n=== 2/3 地图编辑器 ===")
-    bad += report("编辑器", suite(EDITOR, os.path.join(HERE, "editor", "_test.js"),
-                                  os.path.join(PROFILES, "editor")))
-
-    print("\n=== 3/3 集成：编辑器 -> 游戏 ===")
     store = {"v": 1, "maps": [custom_map()]}
     inject = ("<script>try{localStorage.setItem('qqtang.maps.v1', %s);}catch(e){}</script>"
               % json.dumps(json.dumps(store, ensure_ascii=False)))
-    bad += report("集成", suite(GAME, os.path.join(HERE, "game", "_itest.js"),
-                                os.path.join(PROFILES, "integ"), inject))
 
-    print("\n=== 4/4 AI 人机 ===")
-    bad += report("AI", suite(GAME, os.path.join(HERE, "game", "_aitest.js"),
-                              os.path.join(PROFILES, "ai")))
+    suites = [
+        ("游戏", "index.html", "game_test.js", "probe_game.html", "game", ""),
+        ("编辑器", "index.html", "editor_test.js", "probe_editor.html", "editor", ""),
+        ("集成", "index.html", "itest.js", "probe_integ.html", "integ", inject),
+        ("AI", "index.html", "aitest.js", "probe_ai.html", "ai", ""),
+        ("素材库", "gallery.html", "gallery_test.js", "probe_gallery.html", "gallery", ""),
+    ]
+    bad = 0
+    for i, (title, page, js, probe, prof, inject_head) in enumerate(suites):
+        print("\n=== %d/%d %s ===" % (i + 1, len(suites), title))
+        bad += report(title, suite(page, probe, js, os.path.join(PROFILES, prof), inject_head))
 
     print("\n总计失败 %d 条" % bad)
     return 1 if bad else 0

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>夺宝素材库 · SUCAI v1</title>
+<link rel="stylesheet" href="css/gallery.css">
+<link rel="stylesheet" href="css/spec.css">
+</head>
+<body data-bg="checker">
+<div class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="mark"><svg width="22" height="22" viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="4" y="2" width="8" height="2" fill="#3A2416"/><rect x="3" y="4" width="10" height="2" fill="#A82A3B"/><rect x="2" y="6" width="12" height="6" fill="#FFFBF1"/><rect x="3" y="12" width="10" height="2" fill="#3A2416"/><rect x="6" y="7" width="2" height="2" fill="#3A2416"/><rect x="9" y="7" width="2" height="2" fill="#3A2416"/><rect x="7" y="10" width="3" height="1" fill="#3A2416"/></svg></div>
+      <div>
+        <h1>夺宝素材库 <b>v1</b></h1>
+        <div class="meta">SUCAI · PIXEL SVG · <span id="galCount">-</span> ASSETS</div>
+      </div>
+    </div>
+    <label class="search">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="#3A2416" stroke-width="2"/><path d="M10.6 10.6L14 14" stroke="#3A2416" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="q" type="search" placeholder="搜索名称或 ID，如 zelda / 地毯 / 糖弹 / 爆炸格" autocomplete="off" />
+    </label>
+    <div class="top-actions">
+      <button class="btn on" id="tabAssets" type="button">素材库</button>
+      <button class="btn" id="tabSpec" type="button">人物规格</button>
+      <button class="btn" id="btn-sprite">导出精灵图 .svg</button>
+      <button class="btn" id="btn-json">导出清单 .json</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <aside>
+    <div class="side-h">分类 / CATEGORY</div>
+    <div class="nav" id="nav"></div>
+    <div class="side-box">
+      <h4>预览底色</h4>
+      <div class="bg-switch" id="bgswitch">
+        <button data-bg="checker" class="on">棋盘</button>
+        <button data-bg="sand">沙地</button>
+        <button data-bg="night">暗色</button>
+      </div>
+    </div>
+    <div class="side-box">
+      <h4>规范</h4>
+      <div class="legend">
+        网格 <code>1 unit = 1px</code><br>
+        人物成品 <code>32×48</code>（整格宽 / 一格半高；上 16 行是探出碰撞格的头部）<br>
+        人物画稿 <code>32×40</code> · 地砖 <code>32×32</code><br>
+        糖弹 <code>24×24</code>（落在一格内居中）<br>
+        爆炸格 <code>32×32</code>（无外框，相邻拼接成一片火）<br>
+        描边 <code>1px #3A2416</code><br>
+        渲染 <code>image-rendering: pixelated</code>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <div class="tag">SCENE PREVIEW · 640×352</div>
+      <div id="sceneSlot"></div>
+      <div class="cap"><b>组合样张</b> 沙地 + 石墙 + 红毯 + 道具 + 人物 + 糖弹 + 同色火焰</div>
+    </div>
+    <div id="groups"></div>
+  </main>
+</div>
+
+<!-- ============================ 人物规格（原人物规格页并入） ============================ -->
+<section id="specPanel" hidden>
+  <div class="wrap">
+    <div class="toolbar">
+      <span class="lb">缩放</span>
+      <div class="zoom">
+        <button data-z="2" type="button">2×</button>
+        <button data-z="4" type="button" class="on">4×</button>
+        <button data-z="6" type="button">6×</button>
+        <button data-z="8" type="button">8×</button>
+      </div>
+      <button id="sil" type="button" style="margin-left:auto">剪影模式（查识别度）</button>
+    </div>
+
+    <h2>同比例排排站 · 先看身高与剪影是否打架</h2>
+    <div class="lineup" id="lineupBox"></div>
+
+    <h2>四套角色 · 各三视图</h2>
+    <div id="specSections"></div>
+
+    <h2>规格</h2>
+    <div class="spec">
+      <div><b>共用骨架</b>
+        <p>头 <code>y3–17</code>、肩线 <code>y18</code>、腰 <code>y23</code>、鞋 <code>y27–30</code>，脚底压 <code>y30</code>，水平中线 <code>x=15.5</code>。四人并排时身高、头身比完全一致，换角色不跳。</p></div>
+      <div><b>武器是独立图层</b>
+        <p>弓、箭、剑各自带 1px 描边，和身体留 1px 间隙。换武器只改一段代码，不动角色本体。</p></div>
+      <div><b>颜色规则</b>
+        <p>共用底色（描边/皮肤/白/钢等 9 色）不换；每个角色再加 6–8 个专属色。整套无渐变。</p></div>
+      <div><b>剪影识别度</b>
+        <p>点「剪影模式」全黑看轮廓。两两重叠率正面 <code>0.74–0.83</code>，靠青羽的箭枝、夜蔷薇的垂发、银霜的外扩肩甲区分。</p></div>
+      <div><b>朝向</b>
+        <p>侧面统一朝右，朝左一律 <code>transform:scaleX(-1)</code>，不重画。背面用于向上走。</p></div>
+      <div><b>数据来源</b>
+        <p>本页数据由 <code>tools/build_v2.py</code> 生成（tools/spec_db.py + build_chars.py），与素材库共用同一套生成管线。</p></div>
+    </div>
+
+    <div class="shared">
+      <h4>共用底色（9 色，四角色通用）</h4>
+      <ul class="pal" id="specShared"></ul>
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="modal">
+  <div class="sheet">
+    <div class="sheet-top">
+      <div>
+        <h3 id="m-name">—</h3>
+        <div class="mono" id="m-id">—</div>
+        <div class="tags" id="m-tags"></div>
+      </div>
+      <button class="close" id="m-close">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="stage" id="m-stage">
+        <div id="m-preview"></div>
+        <div class="tilewrap" id="m-tiling"></div>
+      </div>
+      <div class="side-info">
+        <dl class="kv">
+          <dt>分类</dt><dd id="m-cat">—</dd>
+          <dt>尺寸</dt><dd id="m-size">—</dd>
+          <dt>网格</dt><dd id="m-grid">—</dd>
+          <dt>颜色</dt><dd id="m-ncol">—</dd>
+        </dl>
+        <div>
+          <div class="side-h" style="margin-bottom:5px">来源 / SOURCE</div>
+          <div class="src" id="m-src">—</div>
+        </div>
+        <div>
+          <div class="side-h" style="margin-bottom:7px">调色板 / CLICK TO COPY</div>
+          <div class="pal" id="m-pal"></div>
+        </div>
+        <div>
+          <div class="side-h" style="margin-bottom:7px">缩放</div>
+          <div class="bg-switch" id="m-zoom">
+            <button data-z="2">2×</button><button data-z="4" class="on">4×</button><button data-z="6">6×</button><button data-z="8">8×</button>
+          </div>
+        </div>
+        <div class="acts">
+          <button class="btn" id="m-copy">复制 SVG</button>
+          <button class="btn" id="m-png">下载 PNG</button>
+          <button class="btn" id="m-svg">下载 SVG</button>
+          <button class="btn" id="m-tile">拼接预览</button>
+        </div>
+        <div>
+          <div class="side-h" style="margin-bottom:7px">源码</div>
+          <div class="code" id="m-code"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="data/gallery-data.js"></script>
+<script src="data/spec-data.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/spec.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+/* =========================================================================
+   QQ糖 · 人物规格面板（原人物规格页并入素材库）
+   全部选择器挂在 #specPanel 下；主题变量在面板作用域内重定义，
+   不与素材库页的暖棕变量 (--ink 等) 互相污染。
+   ========================================================================= */
+#specPanel{
+  --ink:#2A1B33; --ink2:#6E5B84; --paper:#FFFDF7; --line:#E9D9BE;
+  --pink:#FF7BA8; --mint:#63DFC0; --cream:#FFD166; --z:4;
+  max-width:1120px; margin:0 auto 80px;
+}
+#specPanel *{box-sizing:border-box}
+#specPanel button{
+  appearance:none; border:2.5px solid var(--ink); background:#fff; color:var(--ink);
+  font:inherit; font-weight:800; font-size:12px; padding:6px 11px; border-radius:9px; cursor:pointer;
+  box-shadow:0 3px 0 rgba(42,27,51,.16); transition:.08s;
+}
+#specPanel button:hover{background:#FFF1D9}
+#specPanel button:active{transform:translateY(2px); box-shadow:0 1px 0 rgba(42,27,51,.16)}
+#specPanel .zoom button{padding:4px 9px}
+#specPanel .zoom button.on, #specPanel button.on{background:var(--ink); color:#fff}
+
+#specPanel h2{font-size:15px;margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+#specPanel h2::after{content:"";flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px)}
+
+/* ---------- 工具条 ---------- */
+#specPanel .toolbar{
+  display:flex;align-items:center;gap:10px;margin:6px 0 18px;padding:10px 14px;
+  background:var(--paper);border:2.5px solid var(--ink);border-radius:14px;
+  box-shadow:0 5px 0 rgba(42,27,51,.10);flex-wrap:wrap;
+}
+#specPanel .toolbar span.lb{font-size:12px;font-weight:800;color:var(--ink2);margin-right:2px}
+#specPanel .zoom{display:flex;gap:6px}
+
+/* ---------- 排排站 ---------- */
+#specPanel .lineup{background:var(--paper);border:2.5px solid var(--ink);border-radius:18px;padding:16px 18px 20px;
+  box-shadow:0 6px 0 rgba(42,27,51,.10)}
+#specPanel .lane{display:flex;align-items:flex-end;gap:14px;padding:4px 0}
+#specPanel .lane + .lane{margin-top:10px;border-top:2px dashed var(--line);padding-top:14px}
+#specPanel .lane-label{flex:none;width:96px;font-size:11.5px;font-weight:800;color:var(--ink2);padding-bottom:6px;line-height:1.5}
+#specPanel .floor{position:relative;flex:1;height:118px;
+  background-image:
+    linear-gradient(to right, rgba(42,27,51,.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(42,27,51,.07) 1px, transparent 1px);
+  background-size:24px 24px;background-position:0 100%;border-bottom:3px solid var(--ink)}
+#specPanel .slot{position:absolute;bottom:0;width:96px;display:flex;flex-direction:column;align-items:center}
+#specPanel .slot b{order:2;font-size:10.5px;font-weight:800;color:var(--ink2);margin-top:2px}
+#specPanel .slot svg{order:1;width:96px;height:96px;display:block}
+
+/* ---------- 角色段 ---------- */
+#specPanel .char{margin-top:26px;background:var(--paper);border:2.5px solid var(--ink);border-radius:20px;
+  padding:16px 16px 18px;box-shadow:0 6px 0 rgba(42,27,51,.10)}
+#specPanel .char-head{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+#specPanel .num{flex:none;width:38px;height:38px;border-radius:11px;background:var(--ink);color:#fff;
+  font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center}
+#specPanel .who{flex:1;min-width:220px}
+#specPanel .who h3{margin:0;font-size:17px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#specPanel .role{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:#fff;background:var(--pink);
+  border-radius:999px;padding:3px 9px}
+#specPanel .who p{margin:7px 0 0;font-size:12.5px;line-height:1.85;color:var(--ink2);font-weight:650;max-width:560px}
+#specPanel .pal{display:flex;gap:6px;list-style:none;margin:0;padding:0;flex-wrap:wrap;max-width:340px}
+#specPanel .pal li{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--line);
+  border-radius:8px;padding:3px 7px 3px 4px}
+#specPanel .pal i{width:16px;height:16px;border-radius:5px;border:1.5px solid var(--ink);flex:none}
+#specPanel .pal b{font-size:10px;font-weight:800;line-height:1.2}
+#specPanel .pal span{display:none}
+#specPanel .views{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+/* ---------- 卡片 ---------- */
+#specPanel .card{border:2px solid var(--line);border-radius:14px;padding:10px;background:#fff}
+#specPanel .stage{position:relative;height:240px;border-radius:10px;border:1.5px solid var(--line);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;background-color:#FFFCF4;
+  background-image:
+    linear-gradient(to right, rgba(42,27,51,.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(42,27,51,.06) 1px, transparent 1px);
+  background-size: calc(var(--z) * 1px) calc(var(--z) * 1px);
+  background-position:center center}
+#specPanel .pix{filter:drop-shadow(0 5px 0 rgba(42,27,51,.12))}
+#specPanel .pix svg{width:calc(var(--s) * var(--z) * 1px);height:auto;display:block}
+#specPanel .meta h4{margin:10px 0 0;font-size:13px;display:flex;align-items:center;gap:7px}
+#specPanel .dim{font-size:9.5px;font-weight:800;letter-spacing:.3px;color:#fff;background:var(--ink);
+  border-radius:5px;padding:2px 5px}
+#specPanel .meta p{margin:5px 0 0;font-size:11.5px;line-height:1.75;color:var(--ink2);font-weight:650;min-height:34px}
+#specPanel .row{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+#specPanel .row button{font-size:11px;padding:5px 9px;border-width:2px}
+
+/* ---------- 规格 / 共用色 ---------- */
+#specPanel .spec{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+#specPanel .spec div{background:var(--paper);border:2.5px solid var(--ink);border-radius:14px;padding:13px 15px;
+  box-shadow:0 4px 0 rgba(42,27,51,.08)}
+#specPanel .spec b{display:block;font-size:12.5px;margin-bottom:5px}
+#specPanel .spec p{margin:0;font-size:12px;line-height:1.85;color:var(--ink2);font-weight:650}
+#specPanel .spec code{background:#FFF1D9;border-radius:4px;padding:1px 5px;font-size:11px;font-weight:800;color:#A8501F}
+
+#specPanel .shared{margin-top:12px;background:var(--paper);border:2px dashed var(--line);border-radius:14px;padding:12px 14px}
+#specPanel .shared h4{margin:0 0 9px;font-size:12px;color:var(--ink2)}
+#specPanel .shared .pal{max-width:none}
+#specPanel .shared .pal span{display:block;font-size:9px;color:var(--ink2);font-weight:700}
+
+/* ---------- 剪影模式 ---------- */
+#specPanel.sil .pix svg{filter:brightness(0)}
+#specPanel.sil .slot svg{filter:brightness(0)}
+
+@media (max-width:960px){
+  #specPanel .views,#specPanel .spec{grid-template-columns:1fr}
+  #specPanel .stage{height:220px}
+  #specPanel .lane{flex-direction:column;align-items:stretch}
+  #specPanel .lane-label{width:auto}
+}

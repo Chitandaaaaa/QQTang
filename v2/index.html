@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>夺宝对决 · QQ糖</title>
+<link rel="stylesheet" href="css/game.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body data-mode="game">
+<div class="app">
+  <header class="bar">
+    <div class="brand">
+      <span class="logo"><img src="assets/logo.svg" alt="QQ糖"></span>
+    </div>
+    <div class="score">
+      <div class="side" id="side1"><i>塞尔达</i><b id="sc1">0</b></div>
+      <span class="vs">:</span>
+      <div class="side" id="side2"><b id="sc2">0</b><i>林克</i></div>
+    </div>
+    <button class="ghost" id="btnMap">地图 · 夺宝神殿</button>
+    <button class="ghost" id="btnRestart">重开</button>
+    <button class="ghost" id="btnSound">音效 开</button>
+    <button class="ghost" id="btnEdit">地图编辑</button>
+  </header>
+
+  <!-- ============================ 游戏（主模式） ============================ -->
+  <div id="gameApp">
+    <main>
+      <section class="stage" id="stage">
+        <canvas id="cv" width="672" height="384"></canvas>
+        <div class="overlay" id="ov"></div>
+      </section>
+      <div class="rail" id="rail">
+        <aside class="pcard" data-p="1" id="pc1">
+          <div class="pc-head">
+            <div class="pc-face"><img id="face1" alt="塞尔达"></div>
+            <div>
+              <h2>塞尔达</h2>
+              <p>PLAYER 1</p>
+            </div>
+            <span class="tag">P1</span>
+          </div>
+          <div class="pc-stats">
+            <div class="stat"><span>糖弹</span><b id="b1">1<em>/1</em></b></div>
+            <div class="stat"><span>威力</span><b id="ps1">1</b></div>
+            <div class="stat"><span>速度</span><b id="sp1">1</b></div>
+          </div>
+          <div class="pc-bombs" id="pb1"></div>
+          <div class="pc-keys" id="keys1">
+            <div class="krow"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span class="lbl">移动</span></div>
+            <div class="krow"><kbd class="space">空格</kbd><span class="lbl">放糖弹</span></div>
+          </div>
+        </aside>
+        <aside class="pcard" data-p="2" id="pc2">
+          <div class="pc-head">
+            <div class="pc-face"><img id="face2" alt="林克"></div>
+            <div>
+              <h2>林克</h2>
+              <p>PLAYER 2</p>
+            </div>
+            <span class="tag">P2</span><span class="ai-badge" id="ai2">AI 托管</span>
+          </div>
+          <div class="pc-stats">
+            <div class="stat"><span>糖弹</span><b id="b2">1<em>/1</em></b></div>
+            <div class="stat"><span>威力</span><b id="ps2">1</b></div>
+            <div class="stat"><span>速度</span><b id="sp2">1</b></div>
+          </div>
+          <div class="pc-bombs" id="pb2"></div>
+          <div class="pc-keys" id="keys2">
+            <div class="krow"><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd><span class="lbl">移动</span></div>
+            <div class="krow"><kbd class="wide">回车</kbd><span class="lbl">放糖弹</span></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================ 地图编辑器（页内模式） ============================ -->
+  <section id="editorApp">
+    <div class="ebar">
+      <div class="ettl"><b>地图编辑器</b><i>MAP EDITOR · 21 × 12 · 32PX</i></div>
+      <div class="spacer"></div>
+      <button class="ghost" id="btnNew">新建</button>
+      <button class="ghost" id="btnSave">保存</button>
+      <button class="ghost" id="btnSaveAs">另存为</button>
+      <button class="ghost" id="btnExport">导出 JSON</button>
+      <button class="ghost" id="btnImport">导入</button>
+      <button class="primary" id="btnPlay">用这张图开一局</button>
+    </div>
+
+    <div class="ed-grid">
+      <aside class="panel" id="pal"></aside>
+
+      <section class="board">
+        <div class="tools" id="tools">
+          <span class="lab">工具</span>
+          <div class="seg">
+            <button data-tool="brush" type="button">画笔</button>
+            <button data-tool="rect" type="button">矩形</button>
+            <button data-tool="fill" type="button">油漆桶</button>
+          </div>
+          <div class="seg">
+            <button id="btnUndo" type="button">撤销</button>
+            <button id="btnRedo" type="button">重做</button>
+          </div>
+          <div class="div"></div>
+          <div class="seg"><button id="btnGrid" type="button">网格</button></div>
+          <div class="div"></div>
+          <div class="seg">
+            <button id="btnRand" type="button">随机生成</button>
+            <button id="btnSym" type="button">对称生成</button>
+          </div>
+          <div class="seg">
+            <button id="btnMirrorX" type="button">左右镜像</button>
+            <button id="btnMirrorY" type="button">上下镜像</button>
+            <button id="btnMirrorO" type="button">中心对称</button>
+          </div>
+          <div class="seg"><button id="btnClear" type="button">清空</button></div>
+        </div>
+
+        <div class="ecwrap"><canvas id="ecv"></canvas></div>
+
+        <div class="hint">
+          <span><b>左键</b> 落笔 · <b>右键</b> 擦掉 · <b>1/2/3</b> 切工具 · <b>Ctrl+Z</b> 撤销 · <b>Ctrl+S</b> 保存</span>
+          <span>出生点各只有一个，挪到新格子时旧的会自动清掉</span>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="fld">
+          <label>地图名</label>
+          <input type="text" id="fName" maxlength="18" placeholder="我的地图">
+        </div>
+        <div class="fld">
+          <label>主题（决定粒子色与默认贴图）</label>
+          <select id="fTheme">
+            <option value="temple">夺宝神殿</option>
+            <option value="ice">冰原</option>
+          </select>
+        </div>
+        <div class="fld">
+          <label>可炸障碍掉落率 · <b id="fDropVal">40%</b></label>
+          <input type="range" id="fDrop" min="0" max="0.9" step="0.05" value="0.4">
+        </div>
+        <div class="fld">
+          <label>地面</label>
+          <div class="row2"><button class="mini-btn" id="btnFloor" type="button">铺满当前主题地面</button></div>
+        </div>
+
+        <div class="lib" id="tagLegend"></div>
+
+        <div class="chk">
+          <h4>校验</h4>
+          <div id="chkList"></div>
+          <div id="chkBadge" class="crow"></div>
+        </div>
+
+        <div class="lib">
+          <h4>模板（拿内置地图改）</h4>
+          <div id="tplList">
+            <button class="mini-btn" data-tpl="temple" type="button">夺宝神殿</button>
+            <button class="mini-btn" data-tpl="ice" type="button">冰原</button>
+          </div>
+        </div>
+
+        <div class="lib">
+          <h4>我的地图（存在本机浏览器里）</h4>
+          <div id="libList"></div>
+        </div>
+      </aside>
+    </div>
+
+    <input type="file" id="fileIn" accept=".json,application/json" hidden>
+    <div class="toast" id="toast"></div>
+  </section>
+</div>
+
+<!-- 数据（tools/build_v2.py 生成） -->
+<script src="data/sprites.js"></script>
+<script src="data/maps.js"></script>
+<script src="data/tags.js"></script>
+<!-- 游戏逻辑（按分段切出的模块，顺序即原 main.js 的语句顺序） -->
+<script src="js/game/01-const.js"></script>
+<script src="js/game/02-usermaps.js"></script>
+<script src="js/game/03-canvas.js"></script>
+<script src="js/game/04-state.js"></script>
+<script src="js/game/05-audio.js"></script>
+<script src="js/game/06-util.js"></script>
+<script src="js/game/07-map.js"></script>
+<script src="js/game/08-player.js"></script>
+<script src="js/game/09-collision.js"></script>
+<script src="js/game/10-pushblock.js"></script>
+<script src="js/game/11-ai.js"></script>
+<script src="js/game/12-explosion.js"></script>
+<script src="js/game/13-death.js"></script>
+<script src="js/game/14-particles.js"></script>
+<script src="js/game/15-update.js"></script>
+<script src="js/game/16-render.js"></script>
+<script src="js/game/17-hud.js"></script>
+<script src="js/game/18-overlay.js"></script>
+<script src="js/game/19-round.js"></script>
+<script src="js/game/20-input.js"></script>
+<script src="js/game/21-loop.js"></script>
+<script src="js/game/22-boot.js"></script>
+<!-- 页内编辑器 -->
+<script src="js/mode.js"></script>
+<script src="js/editor.js"></script>
+</body>
+</html>
