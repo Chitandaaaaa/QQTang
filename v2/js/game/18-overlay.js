@@ -178,13 +178,13 @@
         </div>
         <div class="ov-grid">
           <div class="ov-cell p1">
-            <h4><span class="dot" style="color:#EFC96A"></span>玩家 1 · 塞尔达</h4>
+            <h4><span class="dot" style="color:#EFC96A"></span>玩家 1 · 达</h4>
             ${bombStripHTML(0)}
             <div class="kline"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><i>移动</i></div>
             <div class="kline"><kbd class="space">空格</kbd><i>放糖弹</i></div>
           </div>
           <div class="ov-cell p2">
-            <h4><span class="dot" style="color:#4CA64C"></span>${state.mode === 'pve' ? '玩家 2 · 林克（AI）' : '玩家 2 · 林克'}</h4>
+            <h4><span class="dot" style="color:#4CA64C"></span>${state.mode === 'pve' ? '玩家 2 · 林（AI）' : '玩家 2 · 林'}</h4>
             ${bombStripHTML(1)}
             ${state.mode === 'pve'
               ? '<div class="kline"><i>由 AI 托管 · 自动走位与放弹</i></div>'

@@ -62,7 +62,7 @@
     return {
       idx: i,
       sprite: i === 0 ? 'zelda' : 'link',
-      name: i === 0 ? '塞尔达' : '林克',
+      name: i === 0 ? '达' : '林',
       x: sp.x, y: sp.y,                       // 出生格（只用于开局/测试对照）
       wx: sp.x * TILE, wy: sp.y * TILE,       // 身体左上角的世界像素坐标
       dir: i === 0 ? 'down' : 'up',

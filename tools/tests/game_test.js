@@ -374,7 +374,7 @@
     eq('I2 进入结算', h.phase, 'over');
     eq('I3 对手胜利数 +1', h.players[1].wins, w0[1] + 1);
     const ovl = G.overlay();
-    truth('I4 弹出结果层', ovl.on && ovl.text.indexOf('林克') >= 0, ovl);
+    truth('I4 弹出结果层', ovl.on && ovl.text.indexOf('林') >= 0, ovl);
     out.logs.result = ovl.text;
 
     /* ================ J 重开复位 ================ */

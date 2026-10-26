@@ -114,8 +114,8 @@
       { k: 'obj', ch: 'd', s: 'prop-snowman', n: '小雪人' }
     ] },
     { t: '出生点', items: [
-      { k: 'spawn', ch: '1', s: 'zelda-front', n: '塞尔达' },
-      { k: 'spawn', ch: '2', s: 'link-front', n: '林克' }
+      { k: 'spawn', ch: '1', s: 'zelda-front', n: '达' },
+      { k: 'spawn', ch: '2', s: 'link-front', n: '林' }
     ] },
     { t: '工具', items: [
       { k: 'erase', n: '橡皮' }

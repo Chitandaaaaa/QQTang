@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-QQ糖 · 夺宝素材库 · 人物（塞尔达 / 林克 / 糖豆，四向）
+QQ糖 · 夺宝素材库 · 人物（达 / 林 / 糖豆，四向）
 规格：成品 32×48 —— 整体一格半高，其中
    第 0..15 行 = 露在自己碰撞格之外的半格（基本是头部，可以盖住上方墙体）
    第 16..47 行 = 身子，正好一个碰撞格 32×32
@@ -93,7 +93,7 @@ LINK_EAR = [(0, 5, 7), (1, 3, 7), (2, 3, 7), (3, 3, 7), (4, 4, 7), (5, 5, 7)]
 
 
 def eye_big(g, x, y):
-    """4×6 超大眼（林克豆子头比例）：深蓝底 + 亮蓝内芯 + 双像素高光"""
+    """4×6 超大眼（主角豆子头比例）：深蓝底 + 亮蓝内芯 + 双像素高光"""
     coords(g, [(x + 1, y), (x + 2, y)], 'e')
     for dy in (1, 2, 3, 4):
         fill(g, y + dy, x, x + 3, 'e')
@@ -119,7 +119,7 @@ def face_details(g):
     coords(g, [(8, 18), (9, 18), (22, 18), (23, 18)], 'b')
 
 
-# ================================================================ 塞尔达
+# ================================================================ 达
 def zelda_front():
     g = grid(W, CHAR_H)
     # 脸
@@ -342,7 +342,7 @@ def zelda_side():
     return g
 
 
-# ================================================================ 林克（豆子头：头 28 行 + 身 19 行）
+# ================================================================ 林（豆子头：头 28 行 + 身 19 行）
 # QQ堂新造型：绿色炸毛短发 + 青蓝头带（左上粉徽章）+ 白衫绿肩 + 深蓝鞋
 def link_front():
     g = grid(W, CHAR_H)
@@ -566,10 +566,10 @@ def link_side():
 
 
 CHARS = [
-    ('zelda-front', zelda_front, zelda_pal, '塞尔达 · 正面'),
-    ('zelda-side', zelda_side, zelda_pal, '塞尔达 · 右侧'),
-    ('zelda-back', zelda_back, zelda_pal, '塞尔达 · 背面'),
-    ('link-front', link_front, link_pal, '林克 · 正面'),
-    ('link-side', link_side, link_pal, '林克 · 右侧'),
-    ('link-back', link_back, link_pal, '林克 · 背面'),
+    ('zelda-front', zelda_front, zelda_pal, '达 · 正面'),
+    ('zelda-side', zelda_side, zelda_pal, '达 · 右侧'),
+    ('zelda-back', zelda_back, zelda_pal, '达 · 背面'),
+    ('link-front', link_front, link_pal, '林 · 正面'),
+    ('link-side', link_side, link_pal, '林 · 右侧'),
+    ('link-back', link_back, link_pal, '林 · 背面'),
 ]
